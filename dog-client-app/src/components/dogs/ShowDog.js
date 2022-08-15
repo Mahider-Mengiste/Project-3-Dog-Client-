@@ -12,6 +12,9 @@ import messages from '../shared/AutoDismissAlert/messages'
 import EditDogModal from './EditDogModal'
 import NewLeashModal from '../leashes/NewLeashModal'
 import ShowLeash from '../leashes/ShowLeash'
+import NewCommentModal from '../comments/NewCommentModal'
+import ShowComment from '../comments/ShowComment'
+import deleteComment from '../../api/comments'
 
 // We need to get the dog's id from the parameters
 // Then we need to make a request to the api
@@ -28,6 +31,7 @@ const ShowDog = (props) => {
     const [dog, setDog] = useState(null)
     const [editModalShow, setEditModalShow] = useState(false)
     const [leashModalShow, setLeashModalShow] = useState(false)
+    const [commentModalShow, setCommentModalShow] = useState(false)
     const [updated, setUpdated] = useState(false)
 
     const { id } = useParams()
@@ -76,7 +80,7 @@ const ShowDog = (props) => {
                 })
             })
             // then navigate to index
-            .then(() => {navigate('/')})
+            .then(() => {navigate('/dogs')})
             // on failure send a failure message
             .catch(err => {                   
                 msgAlert({
@@ -93,6 +97,22 @@ const ShowDog = (props) => {
                 <ShowLeash
                     key={leash._id}
                     leash={leash}
+                    dog={dog}
+                    user={user}
+                    msgAlert={msgAlert}
+                    triggerRefresh={() => setUpdated(prev => !prev)}
+                />
+            ))
+        }
+    }
+
+    let commentCards 
+    if (dog) {
+        if (dog.comments.length > 0) {
+            commentCards = dog.comments.map(comment => (
+                <ShowComment 
+                    key={comment._id}
+                    comment={comment}
                     dog={dog}
                     user={user}
                     msgAlert={msgAlert}
@@ -148,9 +168,46 @@ const ShowDog = (props) => {
                         }
                     </Card.Footer>
                 </Card>
+
+                <Card>
+                    <Card.Header>{ dog.dogType}</Card.Header>
+                    <Card.Body>
+                            <div>Author: { dog.author }</div>
+                            <div>description: { dog.description }</div>
+                        
+                    </Card.Body>
+                    <Card.Footer>
+                        <Button onClick={() => setCommentModalShow(true)}
+                            className="m-2" variant="info"
+                        >
+                            Add a comment!
+                        </Button>
+                        {
+                            dog.owner && user && dog.owner._id === user._id 
+                            ?
+                            <>
+                                <Button onClick={() => setEditModalShow(true)} 
+                                    className="m-2" 
+                                    variant="warning"
+                                >
+                                    Edit comment
+                                </Button>
+                                <Button onClick={() => removeTheDog()}
+                                    className="m-2"
+                                    variant="danger"
+                                >
+                                    delete comment
+                                </Button>
+                            </>
+                            :
+                            null
+                        }
+                    </Card.Footer>
+                </Card>
             </Container>
             <Container style={cardContainerLayout}>
                 {leashCards}
+                {commentCards}
             </Container> 
             
             <EditDogModal 
@@ -170,8 +227,18 @@ const ShowDog = (props) => {
                 triggerRefresh={() => setUpdated(prev => !prev)}
                 handleClose={() => setLeashModalShow(false)} 
             />
+            <NewCommentModal 
+                dog={dog}
+                show={commentModalShow}
+                user={user}
+                msgAlert={msgAlert}
+                triggerRefresh={() => setUpdated(prev => !prev)}
+                handleClose={() => setCommentModalShow(false)} 
+            />
         </>
     )
 }
 
 export default ShowDog
+
+

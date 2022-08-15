@@ -6,7 +6,7 @@ export const createLeash = (user, dogId, newLeash) => {
     console.log('the user in createLeash', user)
     console.log('the newLeash in createLeash', newLeash)
 	return axios({
-		url: `${apiUrl}/leashs/${dogId}`,
+		url: `${apiUrl}/leashes/${dogId}`,
 		method: 'POST',
 		data: { leash: newLeash }
 	})
