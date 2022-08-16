@@ -33,12 +33,13 @@ const EditLeashModal = (props) => {
             }
         })
     }
-
+    
     const handleSubmit = (e) => {
         // e equals the event
         e.preventDefault()
+        console.log('this is new', user, leash, dog._id,leash._id)
 
-        updateLeash(user, dog._id, leash)
+        updateLeash(user, dog._id, leash, leash._id)
             // if we're successful in the modal, we want the modal to close
             .then(() => handleClose())
             // send a success message to the user

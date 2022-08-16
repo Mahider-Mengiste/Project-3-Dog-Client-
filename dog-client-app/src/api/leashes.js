@@ -13,10 +13,10 @@ export const createLeash = (user, dogId, newLeash) => {
 }
 
 // UPDATE leash
-export const updateLeash = (user, dogId, updatedLeash) => {
+export const updateLeash = (user, dogId, updatedLeash, leashId) => {
     console.log('this is updatedLeash', updatedLeash)
 	return axios({
-		url: `${apiUrl}/leashs/${dogId}/${updatedLeash._id}`,
+		url: `${apiUrl}/leashes/${dogId}/${leashId}`,
 		method: 'PATCH',
 		headers: {
 			Authorization: `Token token=${user.token}`,
@@ -28,7 +28,7 @@ export const updateLeash = (user, dogId, updatedLeash) => {
 // DELETE leash
 export const deleteLeash = (user, dogId, leashId) => {
 	return axios({
-		url: `${apiUrl}/leashs/${dogId}/${leashId}`,
+		url: `${apiUrl}/leashes/${dogId}/${leashId}`,
 		method: 'DELETE',
 		headers: {
 			Authorization: `Token token=${user.token}`,

@@ -44,28 +44,28 @@ const ShowDog = (props) => {
     console.log('the dog in showDog', dog)
     // destructuring to get the id value from our route parameters
 
-    // useEffect(() => {
-    //     getOneDog(id)
-    //         .then(res => setDog(res.data.dog))
-    //         .catch(err => {                   
-    //             msgAlert({
-    //                 heading: 'Error getting dog',
-    //                 message: messages.getDogsFailure,
-    //                 variant: 'danger'
-    //             })
-    //             navigate('/')
-    //             //navigate back to the home page if there's an error fetching
-    //         })
-    // }, [updated])
+    useEffect(() => {
+        getOneDog(id)
+            .then(res => setDog(res.data.dog))
+            .catch(err => {                   
+                msgAlert({
+                    heading: 'Error getting dog',
+                    message: messages.getDogsFailure,
+                    variant: 'danger'
+                })
+                navigate('/')
+                //navigate back to the home page if there's an error fetching
+            })
+    }, [updated])
 
-     useEffect( function ()  {
-    async function getMyDog () {
-        const myDog = await  getOneDog(id)
-        setDog(myDog.data.dog)
-        console.log("this is my dog", myDog)
-    }
-    getMyDog()
-    }, [])
+    //  useEffect( function ()  {
+    // async function getMyDog () {
+    //     const myDog = await  getOneDog(id)
+    //     setDog(myDog.data.dog)
+    //     console.log("this is my dog", myDog)
+    // }
+    // getMyDog()
+    // }, [])
 
     // here we'll declare a function that runs which will remove the dog
     // this function's promise chain should send a message, and then go somewhere
@@ -124,8 +124,8 @@ const ShowDog = (props) => {
 
     if (!dog) {
         return <LoadingScreen />
-    }
-
+        }
+        console.log(user, dog)
     return (
         <>
             <Container className="fluid">
@@ -149,6 +149,7 @@ const ShowDog = (props) => {
                         {
                             dog.owner && user && dog.owner._id === user._id 
                             ?
+                            
                             <>
                                 <Button onClick={() => setEditModalShow(true)} 
                                     className="m-2" 
@@ -160,7 +161,8 @@ const ShowDog = (props) => {
                                     className="m-2"
                                     variant="danger"
                                 >
-                                    delete {dog.dogType} 
+                                    {/* delete {dog.dogType}  */}
+                                    delete Dog
                                 </Button>
                             </>
                             :
